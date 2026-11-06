@@ -4,4 +4,5 @@ RUN apk add --no-cache vsftpd \
     && echo "Lista de precios inventada para el laboratorio" > /srv/ftp/precios.txt \
     && chown -R root:root /srv/ftp && chmod 555 /srv/ftp
 EXPOSE 21
-CMD ["/usr/sbin/vsftpd", "/etc/vsftpd/vsftpd.conf"]
+# vsftpd exige que su configuracion pertenezca a root, por eso se copia al arrancar.
+CMD ["sh", "-c", "cp /etc/vsftpd/vsftpd.conf /tmp/vsftpd.conf && chown root:root /tmp/vsftpd.conf && chmod 600 /tmp/vsftpd.conf && exec /usr/sbin/vsftpd /tmp/vsftpd.conf"]

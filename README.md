@@ -5,9 +5,10 @@ Práctica de Seguridad de la Información (CORHUILA, 2026-B). Este repositorio c
 ## Inicio rápido
 
 1. Botón verde **Code → Codespaces → Create codespace on main**.
-2. Espere a que termine la preparación y, en la terminal:
+2. En la terminal:
 
 ```bash
+bash preparar.sh          # instala Nmap y Nuclei (una sola vez)
 ./reiniciar.sh            # enciende el servidor
 ./escanear.sh antes       # primer escaneo
 python3 verificar.py      # qué fallas siguen abiertas

@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 # Enciende el servidor, o lo reinicia para que tome los cambios de configuracion.
 docker compose up -d --build --force-recreate
-sleep 2
+sleep 3
 echo
-docker compose ps --format 'table {{.Service}}\t{{.State}}'
+docker compose ps -a --format 'table {{.Service}}\t{{.State}}'
 echo
-if [ "$(docker compose ps --status running -q | wc -l)" -lt 3 ]; then
-  echo "OJO: algun servicio no quedo encendido. Mire el error con: docker compose logs"
+FALLAN="$(docker compose ps -a --format '{{.Service}} {{.State}}' | grep -v ' running$' | cut -d' ' -f1 | tr '\n' ' ')"
+if [ -n "$FALLAN" ]; then
+  echo "OJO: no quedo encendido: $FALLAN"
+  echo "Mire el error con: docker compose logs"
 else
   echo "Listo: los 3 servicios estan encendidos."
 fi

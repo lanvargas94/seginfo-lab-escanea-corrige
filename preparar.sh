@@ -11,7 +11,11 @@ echo "Instalando Nuclei..."
 curl -fsSL -o /tmp/nuclei.zip "https://github.com/projectdiscovery/nuclei/releases/download/v${NUCLEI_VERSION}/nuclei_${NUCLEI_VERSION}_linux_amd64.zip"
 sudo unzip -oq /tmp/nuclei.zip nuclei -d /usr/local/bin
 echo "Descargando plantillas de Nuclei..."
-nuclei -update-templates -silent -duc || true
+nuclei -update-templates 2>&1 | tail -1
+if [ ! -d "$HOME/nuclei-templates" ]; then
+  echo "ERROR: no se descargaron las plantillas. Ejecute otra vez: bash preparar.sh"
+  exit 1
+fi
 chmod +x reiniciar.sh escanear.sh verificar.py
 nmap --version | head -1
 nuclei -version 2>&1 | tail -1
